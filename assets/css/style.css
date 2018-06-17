@@ -1,0 +1,26 @@
+.jumbotron {
+    background-image: url(../images/train_banner.gif);
+    background-size: cover;
+    background-repeat: no-repeat;
+    color:whitesmoke;
+}
+.container-fluid {
+    border: 1px solid darkcyan;
+}
+.title {
+    background-color:darkcyan;
+    color: whitesmoke;
+}
+#section2 {
+    margin-top: 20px
+}
+.trains-view {
+    border-bottom: 1px solid gray;
+    margin:10px
+}
+.columnTitle {
+    font-weight: bold;
+}
+h4 {
+    margin-left: 10px
+}
