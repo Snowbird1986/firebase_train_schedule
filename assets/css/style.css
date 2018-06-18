@@ -34,3 +34,7 @@ h5 {
     opacity:0.6;
 
 }
+.btn:hover {
+    background-color: teal;
+    color: whitesmoke
+}
