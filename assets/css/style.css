@@ -2,7 +2,7 @@
     background-image: url(../images/train_banner.gif);
     background-size: cover;
     background-repeat: no-repeat;
-    color:whitesmoke;
+    color: maroon;
 }
 .container-fluid:not(#form) {
     border: 1px solid darkcyan;
@@ -27,4 +27,10 @@ h4 {
 #form {
     margin-bottom: 15px;
     margin-top: 15px;
+}
+#jumboTitle {
+    text-align: center;
+    background-color: lightgoldenrodyellow;
+    opacity:0.6;
+
 }
