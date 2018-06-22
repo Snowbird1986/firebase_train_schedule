@@ -24,32 +24,6 @@ $(document).ready(function(){
     var nextArrivals = [];
     var minsAway = []
 
-    // var time = date.now()
-    // var hours = time.gethours()
-    // var min = time.getMinutes()
-    // database.ref().on("value", function(snapshot) {
-    //     if (snapshot.child("names").exists()){
-    //         names = [];
-    //         destinations = [];
-    //         firstArrivals = [];
-    //         frequencies = [];
-    //         nextArrivals = [];
-    //         minsAway = []
-    //         for (var K = 0; K < snapshot.val().names.length; K++) {
-    //         names.push(snapshot.val().names[K])
-    //         destinations.push(snapshot.val().destinations[K])
-    //         firstArrivals.push(snapshot.val().firstArrivals[K])
-    //         frequencies.push(snapshot.val().frequencies[K])
-    //         nextArrivals.push(snapshot.val().nextArrivals[K])
-    //         minsAway.push(snapshot.val().minsAway[K])
-    //         }
-    //         // updateNextAndMinAway()
-    //         renderTrains()
-            
-    //     }
-    // }), function(errorObject) {
-    //     console.log("The read failed: " + errorObject.code);
-    // };
     updateNextAndMinAway()
     function renderTrains() {
         // $("#addTrains").empty();
@@ -76,27 +50,6 @@ $(document).ready(function(){
             console.log("The read failed: " + errorObject.code);
         });
         };
-    // function timeConverter(hours,minutes) {
-    //     var hourOverlap = Math.floor((minutes+frequency)/60)
-    //     var minutes = (parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap));
-    //     var hours = parseFloat(hours)+parseFloat(hourOverlap);
-    //     console.log(hours);
-    //     console.log(minutes);
-    
-    //     if (hours < 10) {
-    //         hours = "0" + hours;
-    //     }
-    
-    //     if (minutes === 0) {
-    //         minutes = "00";
-    //     }
-    //     else if (minutes < 10) {
-    //         minutes = "0" + minutes;
-    //     }
-    
-    //     return hours + ":" + minutes;
-    //     }
-
 
     $("#run-search").on("click", function(event) {
         // Don't refresh the page!
@@ -145,21 +98,6 @@ $(document).ready(function(){
         else if(moment().hours()==hours && moment().minutes()<minutes){
             minAway = (minutes - moment().minutes())
         }
-        //   timeConverter(firstArrival)
-        //   if(moment().hour()>firstArrival){
-        //     if(moment().minute()>firstArrival.getMinutes())
-        //     nextArrival = firstArrival;
-        //   }
-        
-        
-
-        //   console.log($("#train-name").val().trim());
-        //   console.log($("#destination").val().trim());
-        //   console.log($("#first-time").val().trim());
-        //   console.log($("#frequency").val().trim());
-        //   console.log(firstArrival.hour());
-        //   console.log(firstArrival.minute());
-        
 
         names.push(name)
         destinations.push(destination)
@@ -226,6 +164,7 @@ $(document).ready(function(){
                     var hours = snapshot.val().nextArrivals[j].substring(0, 2);
                     var frequency = snapshot.val().frequencies[j]
                     var nextArrival = snapshot.val().nextArrivals[j]
+                    minAway= []
                     
                     if(moment().hours()>hours){
                         var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
