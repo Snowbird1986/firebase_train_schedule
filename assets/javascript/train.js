@@ -23,6 +23,7 @@ $(document).ready(function(){
     var frequencies = [];
     var nextArrivals = [];
     var minsAway = []
+    
 
     updateNextAndMinAway()
     function renderTrains() {
@@ -58,15 +59,11 @@ $(document).ready(function(){
       var destination = $("#destination").val().trim();
       var firstArrival = $("#first-time").val().trim();
       var frequency = $("#frequency").val().trim();
-      var minutes = firstArrival.substring(3, );
-      var hours = firstArrival.substring(0, 2);
+      var minutes = moment(firstArrival).hours();
+      var hours = moment(firstArrival).hours();
       var nextArrival = firstArrival;
       var minAway = 0
-      
-      console.log(hours)
-      console.log(minutes)
-      console.log(frequency)
-    //   console.log(moment().hours()<=hours)
+
       
         if(moment().hours()>hours){
             var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
@@ -74,11 +71,8 @@ $(document).ready(function(){
             // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
             nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
             console.log(nextArrival,typeof(nextArrival))
-            hours = nextArrival.substring(0, 2);
-            minutes = nextArrival.substring(3, );
-            console.log(nextArrival)
-            console.log(hours)
-            console.log(minutes)
+            hours = moment(nextArrival).hours()
+            minutes = moment(nextArrival).minutes()
         }
         else if(moment().hours()==hours && moment().minutes()>=minutes){
             var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
@@ -86,11 +80,8 @@ $(document).ready(function(){
             // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
             nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
             console.log(nextArrival,typeof(nextArrival))
-            hours = nextArrival.substring(0, 2);
-            minutes = nextArrival.substring(3, );
-            console.log(nextArrival)
-            console.log(hours)
-            console.log(minutes)
+            hours = moment(nextArrival).hours()
+            minutes = moment(nextArrival).minutes()
         }
         if(moment().hours()<hours){
             minAway = ((hours-moment().hours())*60)+(minutes - moment().minutes())
@@ -106,10 +97,6 @@ $(document).ready(function(){
         nextArrivals.push(nextArrival)
         minsAway.push(minAway)
         
-        console.log(names);
-        console.log(destinations);
-        console.log(firstArrivals);
-        console.log(frequencies);
         
         
         database.ref().set({
@@ -172,36 +159,23 @@ $(document).ready(function(){
                         // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
                         nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
                         console.log(nextArrival,typeof(nextArrival))
-                        hours = nextArrival.substring(0, 2);
-                        minutes = nextArrival.substring(3, );
-                        console.log(nextArrival)
-                        console.log(hours)
-                        console.log(minutes)
-                        // return nextArrival
+                        hours = moment(nextArrival).hours()
+                        minutes = moment(nextArrival).minutes()
                       }
                       else if(moment().hours()==hours && moment().minutes()>=minutes){
                         var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
                         console.log(hourOverlap)
                         // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
                         nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
-                        console.log(nextArrival,typeof(nextArrival))
-                        hours = nextArrival.substring(0, 2);
-                        minutes = nextArrival.substring(3, );
-                        console.log(nextArrival)
-                        console.log(hours)
-                        console.log(minutes)
-                        // return nextArrival
+                        hours = moment(nextArrival).hours()
+                        minutes = moment(nextArrival).minutes()
                       }
                       if(moment().hours()<hours){
                         minAway = ((hours-moment().hours())*60)+(minutes - moment().minutes())
-                        // return minAway
                       }
                       else if(moment().hours()==hours && moment().minutes()<minutes){
                         minAway = (minutes - moment().minutes())
-                        // return minAway
                       }
-                      console.log(nextArrival)
-                      console.log(minAway)
 
                     names.push(snapshot.val().names[j])
                     destinations.push(snapshot.val().destinations[j])
