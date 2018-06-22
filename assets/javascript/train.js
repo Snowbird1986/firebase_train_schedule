@@ -1,0 +1,292 @@
+$(document).ready(function(){
+    var config = {
+        apiKey: "AIzaSyAWuD5v2YHFiILLw451AqIwwCWAc9LK7Ag",
+        authDomain: "train-project-330b1.firebaseapp.com",
+        databaseURL: "https://train-project-330b1.firebaseio.com",
+        projectId: "train-project-330b1",
+        storageBucket: "train-project-330b1.appspot.com",
+        messagingSenderId: "857624317506"
+      };
+      firebase.initializeApp(config);
+    var database = firebase.database();
+    moment().format();
+    console.log(moment().format());
+    console.log(moment());
+    console.log(moment().hours());
+    console.log(moment().minutes());
+
+    
+
+    var names = [];
+    var destinations = [];
+    var firstArrivals = [];
+    var frequencies = [];
+    var nextArrivals = [];
+    var minsAway = []
+
+    // var time = date.now()
+    // var hours = time.gethours()
+    // var min = time.getMinutes()
+    // database.ref().on("value", function(snapshot) {
+    //     if (snapshot.child("names").exists()){
+    //         names = [];
+    //         destinations = [];
+    //         firstArrivals = [];
+    //         frequencies = [];
+    //         nextArrivals = [];
+    //         minsAway = []
+    //         for (var K = 0; K < snapshot.val().names.length; K++) {
+    //         names.push(snapshot.val().names[K])
+    //         destinations.push(snapshot.val().destinations[K])
+    //         firstArrivals.push(snapshot.val().firstArrivals[K])
+    //         frequencies.push(snapshot.val().frequencies[K])
+    //         nextArrivals.push(snapshot.val().nextArrivals[K])
+    //         minsAway.push(snapshot.val().minsAway[K])
+    //         }
+    //         // updateNextAndMinAway()
+    //         renderTrains()
+            
+    //     }
+    // }), function(errorObject) {
+    //     console.log("The read failed: " + errorObject.code);
+    // };
+    updateNextAndMinAway()
+    function renderTrains() {
+        // $("#addTrains").empty();
+        console.log()
+        database.ref().on("value", function(snapshot) {
+        $("#addTrains").empty();
+        for (var i = 0; i < snapshot.val().names.length; i++) {
+
+            // Then dynamicaly generates buttons for each movie in the array
+            // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+            
+            var row = $("<div>").addClass("row").addClass("trains-view") 
+            var a = $("<div>").addClass("col-md-4").attr("id", "trainNameDiv").text(snapshot.val().names[i]);;
+            var b = $("<div>").addClass("col-md-2").attr("id", "destinationDiv").text(snapshot.val().destinations[i]);
+            var c = $("<div>").addClass("col-md-2").attr("id", "frequencyDiv").text(snapshot.val().frequencies[i]);
+            var d = $("<div>").addClass("col-md-2").attr("id", "nextArrivalDiv").text(snapshot.val().nextArrivals[i]);
+            var e = $("<div>").addClass("col-md-2").attr("id", "minAwayDiv").text(snapshot.val().minsAway[i]);
+
+
+            var train = row.append(a).append(b).append(c).append(d).append(e)
+            // Added the button to the buttons-view div
+            $("#addTrains").append(train);
+        }}, function(errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+        };
+    // function timeConverter(hours,minutes) {
+    //     var hourOverlap = Math.floor((minutes+frequency)/60)
+    //     var minutes = (parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap));
+    //     var hours = parseFloat(hours)+parseFloat(hourOverlap);
+    //     console.log(hours);
+    //     console.log(minutes);
+    
+    //     if (hours < 10) {
+    //         hours = "0" + hours;
+    //     }
+    
+    //     if (minutes === 0) {
+    //         minutes = "00";
+    //     }
+    //     else if (minutes < 10) {
+    //         minutes = "0" + minutes;
+    //     }
+    
+    //     return hours + ":" + minutes;
+    //     }
+
+
+    $("#run-search").on("click", function(event) {
+        // Don't refresh the page!
+        event.preventDefault();
+      var name = $("#train-name").val().trim();
+      var destination = $("#destination").val().trim();
+      var firstArrival = $("#first-time").val().trim();
+      var frequency = $("#frequency").val().trim();
+      var minutes = firstArrival.substring(3, );
+      var hours = firstArrival.substring(0, 2);
+      var nextArrival = firstArrival;
+      var minAway = 0
+      
+      console.log(hours)
+      console.log(minutes)
+      console.log(frequency)
+    //   console.log(moment().hours()<=hours)
+      
+        if(moment().hours()>hours){
+            var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
+            console.log(hourOverlap)
+            // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
+            nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
+            console.log(nextArrival,typeof(nextArrival))
+            hours = nextArrival.substring(0, 2);
+            minutes = nextArrival.substring(3, );
+            console.log(nextArrival)
+            console.log(hours)
+            console.log(minutes)
+        }
+        else if(moment().hours()==hours && moment().minutes()>=minutes){
+            var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
+            console.log(hourOverlap)
+            // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
+            nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
+            console.log(nextArrival,typeof(nextArrival))
+            hours = nextArrival.substring(0, 2);
+            minutes = nextArrival.substring(3, );
+            console.log(nextArrival)
+            console.log(hours)
+            console.log(minutes)
+        }
+        if(moment().hours()<hours){
+            minAway = ((hours-moment().hours())*60)+(minutes - moment().minutes())
+        }
+        else if(moment().hours()==hours && moment().minutes()<minutes){
+            minAway = (minutes - moment().minutes())
+        }
+        //   timeConverter(firstArrival)
+        //   if(moment().hour()>firstArrival){
+        //     if(moment().minute()>firstArrival.getMinutes())
+        //     nextArrival = firstArrival;
+        //   }
+        
+        
+
+        //   console.log($("#train-name").val().trim());
+        //   console.log($("#destination").val().trim());
+        //   console.log($("#first-time").val().trim());
+        //   console.log($("#frequency").val().trim());
+        //   console.log(firstArrival.hour());
+        //   console.log(firstArrival.minute());
+        
+
+        names.push(name)
+        destinations.push(destination)
+        firstArrivals.push(firstArrival)
+        frequencies.push(frequency)
+        nextArrivals.push(nextArrival)
+        minsAway.push(minAway)
+        
+        console.log(names);
+        console.log(destinations);
+        console.log(firstArrivals);
+        console.log(frequencies);
+        
+        
+        database.ref().set({
+            names: names,
+            destinations: destinations,
+            firstArrivals: firstArrivals,
+            frequencies: frequencies,
+            nextArrivals: nextArrivals,
+            minsAway: minsAway,
+            });
+            renderTrains()
+            $("#train-name").val("");
+            $("#destination").val("");
+            $("#first-time").val("");
+            $("#frequency").val("");
+        });
+    $("#clear-all").on("click", function(event) {
+        // Don't refresh the page!
+        event.preventDefault();
+        names = [];
+        destinations = [];
+        firstArrivals = [];
+        frequencies = [];
+        nextArrivals = [];
+        minsAway = [];
+        database.ref().set({
+            names: names,
+            destinations: destinations,
+            firstArrivals: firstArrivals,
+            frequencies: frequencies,
+            nextArrivals: nextArrivals,
+            minsAway: minsAway,
+            });
+        renderTrains()
+        $("#train-name").val("");
+        $("#destination").val("");
+        $("#first-time").val("");
+        $("#frequency").val("");
+    });
+    refreshInterval = setInterval(updateNextAndMinAway,60000);
+    function updateNextAndMinAway (){
+        database.ref().on("value", function(snapshot) {
+            if (snapshot.child("names").exists()){
+                names = [];
+                destinations = [];
+                firstArrivals = [];
+                frequencies = [];
+                minsAway = []
+                nextArrivals = [];
+                for (var j = 0; j < snapshot.val().names.length; j++) {
+                    var minutes = snapshot.val().nextArrivals[j].substring(3, );
+                    var hours = snapshot.val().nextArrivals[j].substring(0, 2);
+                    var frequency = snapshot.val().frequencies[j]
+                    var nextArrival = snapshot.val().nextArrivals[j]
+                    
+                    if(moment().hours()>hours){
+                        var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
+                        console.log(hourOverlap)
+                        // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
+                        nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
+                        console.log(nextArrival,typeof(nextArrival))
+                        hours = nextArrival.substring(0, 2);
+                        minutes = nextArrival.substring(3, );
+                        console.log(nextArrival)
+                        console.log(hours)
+                        console.log(minutes)
+                        // return nextArrival
+                      }
+                      else if(moment().hours()==hours && moment().minutes()>=minutes){
+                        var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
+                        console.log(hourOverlap)
+                        // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
+                        nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
+                        console.log(nextArrival,typeof(nextArrival))
+                        hours = nextArrival.substring(0, 2);
+                        minutes = nextArrival.substring(3, );
+                        console.log(nextArrival)
+                        console.log(hours)
+                        console.log(minutes)
+                        // return nextArrival
+                      }
+                      if(moment().hours()<hours){
+                        minAway = ((hours-moment().hours())*60)+(minutes - moment().minutes())
+                        // return minAway
+                      }
+                      else if(moment().hours()==hours && moment().minutes()<minutes){
+                        minAway = (minutes - moment().minutes())
+                        // return minAway
+                      }
+                      console.log(nextArrival)
+                      console.log(minAway)
+
+                    names.push(snapshot.val().names[j])
+                    destinations.push(snapshot.val().destinations[j])
+                    firstArrivals.push(snapshot.val().firstArrivals[j])
+                    frequencies.push(snapshot.val().frequencies[j])
+                    nextArrivals.push(nextArrival)
+                    minsAway.push(minAway)
+                    }
+                database.ref().set({
+                    names: names,
+                    destinations: destinations,
+                    firstArrivals: firstArrivals,
+                    frequencies: frequencies,
+                    nextArrivals: nextArrivals,
+                    minsAway: minsAway,
+                    });
+                renderTrains()
+            }
+        });
+    }
+    database.ref().on("value", function(snapshot) {
+        console.log(snapshot.val());
+      }, function(errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
+
+});

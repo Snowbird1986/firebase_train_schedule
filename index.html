@@ -8,6 +8,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
     <script type="text/javascript" src="./assets/javascript/train.js"></script>
     <title>Hogwartz Express Schedule</title>
 </head>
@@ -42,8 +44,8 @@
                 <p class="columnTitle">Minutes Away</p>
             </div>
         </div>
-        <div class="row trains-view">
-            <p>add train here</p>
+        <div id="addTrains">
+
         </div>
     </div>
     <div class="container-fluid col-lg-10 offset-lg-1" id="section2">
@@ -54,19 +56,19 @@
                 <form role="form">
                     <div class="form-group">
                         <label for="train-name">Train Name</label>
-                        <input type="text" class="form-control" id="train-name">
+                        <input type="text" class="form-control" id="train-name" type="text">
                     </div>
                     <div class="form-group">
                         <label for="destination">Destination</label>
-                        <input type="text" class="form-control" id="destination">
+                        <input type="text" class="form-control" id="destination" type="text">
                     </div>
                     <div class="form-group">
                         <label for="first-time">First Train Time (HH:MM - military time)</label>
-                        <input type="text" class="form-control" id="first-time">
+                        <input type="text" class="form-control" id="first-time" type="time">
                     </div>
                     <div class="form-group">
                         <label for="frequency">Frequency (min)</label>
-                        <input type="text" class="form-control" id="frequency">
+                        <input type="text" class="form-control" id="frequency" type="number">
                     </div>
                     <button type="submit" class="btn btn-default" id="run-search">
                         <i class="fa fa-search"></i> Search</button>
