@@ -27,8 +27,7 @@ $(document).ready(function(){
 
     updateNextAndMinAway()
     function renderTrains() {
-        // $("#addTrains").empty();
-        console.log()
+        
         database.ref().on("value", function(snapshot) {
         $("#addTrains").empty();
         for (var i = 0; i < snapshot.val().names.length; i++) {
@@ -55,31 +54,30 @@ $(document).ready(function(){
     $("#run-search").on("click", function(event) {
         // Don't refresh the page!
         event.preventDefault();
-      var name = $("#train-name").val().trim();
-      var destination = $("#destination").val().trim();
-      var firstArrival = $("#first-time").val().trim();
-      var frequency = $("#frequency").val().trim();
-      var minutes = moment(firstArrival).hours();
-      var hours = moment(firstArrival).hours();
-      var nextArrival = firstArrival;
-      var minAway = 0
+        var name = $("#train-name").val().trim();
+        var destination = $("#destination").val().trim();
+        var firstArrival = $("#first-time").val().trim();
+        var frequency = $("#frequency").val().trim();
+        var minutes = moment(firstArrival).minutes();
+        var hours = moment(firstArrival).hours();
+        var nextArrival = firstArrival;
+        var minAway = 0
+
 
       
         if(moment().hours()>hours){
             var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
-            console.log(hourOverlap)
-            // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
-            nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
-            console.log(nextArrival,typeof(nextArrival))
+            nextArrival = moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm")=="23:59" ? firstArrival: moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm")
+            // nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
+            // console.log(moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm"))
             hours = moment(nextArrival).hours()
             minutes = moment(nextArrival).minutes()
         }
         else if(moment().hours()==hours && moment().minutes()>=minutes){
             var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
-            console.log(hourOverlap)
-            // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
-            nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
-            console.log(nextArrival,typeof(nextArrival))
+            nextArrival = moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm")=="23:59" ? firstArrival: moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm")
+            // nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
+            // console.log(moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm"))
             hours = moment(nextArrival).hours()
             minutes = moment(nextArrival).minutes()
         }
@@ -151,22 +149,21 @@ $(document).ready(function(){
                     var hours = snapshot.val().nextArrivals[j].substring(0, 2);
                     var frequency = snapshot.val().frequencies[j]
                     var nextArrival = snapshot.val().nextArrivals[j]
-                    minAway= []
+                    minAway= ((moment().hours()-hours+24)*60)+(minutes - moment().minutes())
                     
                     if(moment().hours()>hours){
                         var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
-                        console.log(hourOverlap)
-                        // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
-                        nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
-                        console.log(nextArrival,typeof(nextArrival))
+                        nextArrival = moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm")=="23:59" ? firstArrival[j]: moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm")
+                        // nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
+                        // console.log(moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm"))
                         hours = moment(nextArrival).hours()
                         minutes = moment(nextArrival).minutes()
                       }
                       else if(moment().hours()==hours && moment().minutes()>=minutes){
                         var hourOverlap = Math.floor((parseFloat(minutes)+parseFloat(frequency))/60)
-                        console.log(hourOverlap)
-                        // nextArrival = ((parseFloat(hours)+parseFloat(hourOverlap)) > 24 ? (parseFloat(hours)+parseFloat(hourOverlap)) - 24 : (parseFloat(hours)+parseFloat(hourOverlap))) +":"+ ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) < 10 ? "0" + ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap))) : ((parseFloat(minutes)+parseFloat(frequency)) - (60*parseFloat(hourOverlap)));
-                        nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
+                        nextArrival = moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm")=="23:59" ? firstArrival: moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm")
+                        // nextArrival = (parseFloat(hours)+parseFloat(hourOverlap))+":"+((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap)))
+                        // console.log(moment().hours(parseFloat(hours)+parseFloat(hourOverlap)).minutes((parseFloat(minutes)+parseFloat(frequency))-(60*parseFloat(hourOverlap))).format("HH:mm"))
                         hours = moment(nextArrival).hours()
                         minutes = moment(nextArrival).minutes()
                       }
@@ -196,10 +193,4 @@ $(document).ready(function(){
             }
         });
     }
-    database.ref().on("value", function(snapshot) {
-        console.log(snapshot.val());
-      }, function(errorObject) {
-        console.log("The read failed: " + errorObject.code);
-      });
-
 });
